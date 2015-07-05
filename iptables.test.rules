@@ -1,0 +1,43 @@
+*raw
+-A PREROUTING -j NOTRACK
+-A OUTPUT -j NOTRACK
+COMMIT
+
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+
+##  Allows all loopback (lo0) traffic and drop all traffic to 127/8 that doesn't use lo0
+-A INPUT -i lo -j ACCEPT
+
+## allow incoming SSH, change port here:
+-A INPUT -p tcp --dport 23942 -j ACCEPT
+## only allow on one of our IPs:
+#-A INPUT -p tcp -d 123.456.789.01 --dport 23942 -j ACCEPT
+
+## allow munin from webserver
+-A INPUT -p tcp --dport 4949 -s 194.150.168.61 -j ACCEPT
+
+## DirPort, ORPort (optional: Webserver)
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+
+## Allow several ICMP types 
+## http://www.oregontechsupport.com/articles/icmp.txt
+-A INPUT -p icmp -m icmp --icmp-type host-unreachable -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type port-unreachable -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type fragmentation-needed -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type source-quench -j ACCEPT
+-A INPUT -p icmp --icmp-type echo-request -m limit --limit 2/s -j ACCEPT
+-A INPUT -p icmp --icmp-type echo-request -j DROP
+
+## to log denied packets uncomment this line
+#-A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables denied: " --log-level 7
+
+## drop non-established TCP
+-A INPUT -p tcp --syn -j DROP
+
+## allows all udp in, but avoids conntrack
+
+COMMIT
