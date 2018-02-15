@@ -19,7 +19,8 @@ RelayBandwidthBurst 100 MBytes
 
 MyFamily %MYFAMILY
 
-ContactInfo https://www.torservers.net/donate.html <support .AT. torservers .DOT. net>
+#ContactInfo https://www.torservers.net/donate.html <support .AT. torservers .DOT. net>
+ContactInfo %CONTACTDATA
 DirFrontPage /etc/tor/tor-exit-notice.html
 CellStatistics 1
 DirReqStatistics 1
