@@ -1,8 +1,15 @@
 Nickname %NICK
+ContactInfo %CONTACTDATA
+
 ORPort %IP:%PORT
 DirPort %IP:%DIRPORT
 Address %IP
 OutboundBindAddress %IP 
+
+RelayBandwidthRate 30 MBytes
+RelayBandwidthBurst 100 MBytes
+
+MyFamily %MYFAMILY
 
 ##IPv6
 #IPv6Exit 1
@@ -10,29 +17,10 @@ OutboundBindAddress %IP
 #OutboundBindAddress [a:b:c:d::e]
 #ExitPolicy reject6 *:25,accept6 *:*
 
-DataDirectory /var/lib/tor/%INSTANCE
-PidFile /var/run/tor/tor%INSTANCE.pid
-Log notice file /var/log/tor/notices%INSTANCE.log
-
-RelayBandwidthRate 30 MBytes
-RelayBandwidthBurst 100 MBytes
-
-MyFamily %MYFAMILY
-
-#ContactInfo https://www.torservers.net/donate.html <support .AT. torservers .DOT. net>
-ContactInfo %CONTACTDATA
 DirFrontPage /etc/tor/tor-exit-notice.html
-CellStatistics 1
-DirReqStatistics 1
-EntryStatistics 1
-ExitPortStatistics 1
-ExtraInfoStatistics 1
-HiddenServiceStatistics 1
 
 SocksPort 0
 SocksPolicy reject *
-
-RunAsDaemon 1
 
 # https://trac.torproject.org/projects/tor/wiki/TheOnionRouter/ReducedExitPolicy
 # 05.07.2015 
